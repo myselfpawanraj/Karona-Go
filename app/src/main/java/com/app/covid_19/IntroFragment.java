@@ -1,0 +1,89 @@
+package com.app.covid_19;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+
+import com.app.covid_19.model.PrefManager;
+
+public class IntroFragment extends Fragment {
+
+    private static final String BACKGROUND_COLOR = "backgroundColor";
+    private static final String PAGE = "page";
+
+    private int mBackgroundColor, mPage;
+
+    public static IntroFragment newInstance(int backgroundColor, int page) {
+        IntroFragment frag = new IntroFragment();
+        Bundle b = new Bundle();
+        b.putInt(BACKGROUND_COLOR, backgroundColor);
+        b.putInt(PAGE, page);
+        frag.setArguments(b);
+        return frag;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!getArguments().containsKey(BACKGROUND_COLOR))
+            throw new RuntimeException("Fragment must contain a \"" + BACKGROUND_COLOR + "\" argument!");
+        mBackgroundColor = getArguments().getInt(BACKGROUND_COLOR);
+
+        if (!getArguments().containsKey(PAGE))
+            throw new RuntimeException("Fragment must contain a \"" + PAGE + "\" argument!");
+        mPage = getArguments().getInt(PAGE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Select a layout based on the current page
+        int layoutResId;
+        switch (mPage) {
+            case 0:
+                layoutResId = R.layout.intro_fragment_layout_1;
+                break;
+            case 1:
+                layoutResId = R.layout.intro_fragment_layout_2;
+                break;
+            case 2:
+                layoutResId = R.layout.intro_fragment_layout_3;
+                break;
+            default:
+                layoutResId = R.layout.intro_fragment_layout_4;
+        }
+
+        // Inflate the layout resource file
+        View view = getActivity().getLayoutInflater().inflate(layoutResId, container, false);
+
+        // Set the current page index as the View's tag (useful in the PageTransformer)
+        view.setTag(mPage);
+        if(layoutResId == R.layout.intro_fragment_layout_4)
+        {Button button = view.findViewById( R.id.button );
+        button.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrefManager prefManager=new PrefManager( getContext());
+                prefManager.setFirstTimeLaunch(false);
+                startActivity(new Intent(getActivity(), SplashScreenActivity.class));
+                getActivity().finish();
+            }
+        } );}
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        View background = view.findViewById(R.id.intro_background);
+        background.setBackgroundColor(mBackgroundColor);
+    }
+    
+}

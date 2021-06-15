@@ -1,0 +1,47 @@
+package com.app.covid_19.model;
+
+import android.media.Image;
+
+public class Post {
+    String title, description, link;
+    int image;
+
+    public Post(String title, String description, String link, int image) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.image = image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+}
